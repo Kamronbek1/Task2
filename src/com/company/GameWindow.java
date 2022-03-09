@@ -84,7 +84,6 @@ public class GameWindow implements Closeable {
                         }
                     } else if (count >= 9){
                         System.out.println("ничья!!!");
-                        init();
                         chooseQuiz();
                     }
                     refreshConsole();
@@ -105,6 +104,7 @@ public class GameWindow implements Closeable {
         String var=sc.nextLine().trim();
         switch (var) {
             case "да":
+                init();
                 play();
             case "нет":
                 play = false;

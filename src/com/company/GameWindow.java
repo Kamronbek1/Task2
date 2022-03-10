@@ -9,7 +9,7 @@ public class GameWindow implements Closeable {
 
     private char[][] array;
     private final Scanner sc;
-    private PrintWriter writer;
+    private final PrintWriter writer;
 
 
     public GameWindow() throws FileNotFoundException {
@@ -73,7 +73,7 @@ public class GameWindow implements Closeable {
                         isX = true;
                     }
                     count++;
-                    if (count >= 5 ) {
+                    if (count >= 5) {
                         if (checkWinner()) {
                             String name = !isX ? player1.getName() : player2.getName();
                             System.out.println(name);
@@ -82,7 +82,7 @@ public class GameWindow implements Closeable {
 
                             chooseQuiz();
                         }
-                    } else if (count >= 9){
+                    } else if (count >= 9) {
                         System.out.println("ничья!!!");
                         chooseQuiz();
                     }
@@ -95,13 +95,13 @@ public class GameWindow implements Closeable {
                 System.out.println("введите числа только в диапазоне!!!");
                 continue;
             }
-            refreshConsole();
+            //refreshConsole();
         }
     }
 
     private void chooseQuiz() {
         System.out.println("хотите сыграть заново?(да/нет)");
-        String var=sc.nextLine().trim();
+        String var = sc.nextLine().trim();
         switch (var) {
             case "да":
                 init();
@@ -127,25 +127,23 @@ public class GameWindow implements Closeable {
     }
 
     private boolean checkWinner() {
-        if (array[0][0] == array[0][1] && array[0][1] == array[0][2])
+        if (array[0][0] != '-' && array[0][0] == array[0][1] && array[0][1] == array[0][2])
             return true;
-        else if (array[1][0] == array[1][1] && array[1][1] == array[1][2])
+        else if (array[1][0] != '-' && array[1][0] == array[1][1] && array[1][1] == array[1][2])
             return true;
-        else if (array[2][0] == array[2][1] && array[2][1] == array[2][2])
-            return true;
-
-        else if (array[0][0] == array[1][0] && array[1][0] == array[2][0])
-            return true;
-        else if (array[0][1] == array[1][1] && array[1][1] == array[2][1])
-            return true;
-        else if (array[0][2] == array[1][2] && array[1][2] == array[2][2])
+        else if (array[2][0] != '-' && array[2][0] == array[2][1] && array[2][1] == array[2][2])
             return true;
 
-        else if (array[0][0] == array[1][1] && array[1][1] == array[2][2])
+        else if (array[0][0] != '-' && array[0][0] == array[1][0] && array[1][0] == array[2][0])
             return true;
-        else if (array[0][2] == array[1][1] && array[1][1] == array[2][0])
+        else if (array[0][1] != '-' && array[0][1] == array[1][1] && array[1][1] == array[2][1])
             return true;
-        return true;
+        else if (array[0][2] != '-' && array[0][2] == array[1][2] && array[1][2] == array[2][2])
+            return true;
+
+        else if (array[0][0] != '-' && array[0][0] == array[1][1] && array[1][1] == array[2][2])
+            return true;
+        else return array[0][2] != '-' && array[0][2] == array[1][1] && array[1][1] == array[2][0];
     }
 
     @Override

@@ -57,6 +57,7 @@ public class GameWindow implements Closeable {
         byte x, y, count = 0;
         boolean isX = true;
         while (play) {
+
             System.out.printf("ход %s\n", isX ? "1-го игрока" : "2-го игрока");
             System.out.print("введите координаты (x,y): ");
             x = sc.nextByte();
@@ -73,24 +74,35 @@ public class GameWindow implements Closeable {
                         isX = true;
                     }
                     count++;
-                    if (count >= 5) {
-                        if (checkWinner()) {
-                            String name = !isX ? player1.getName() : player2.getName();
-                            System.out.println(name);
-                            writer.println(name);
-                            writer.flush();
-
-                            chooseQuiz();
-                        }
-                    } else if (count >= 9) {
-                        System.out.println("ничья!!!");
-                        chooseQuiz();
-                    }
                     refreshConsole();
                 } else {
                     System.out.println("введите заново! уже занят");
                     continue;
                 }
+
+                if (count >= 5 && count < 9) {
+                    if (checkWinner()) {
+                        String name;
+                        Player winner;
+                        if (!isX) {
+                            final int score = player1.getScore() + 1;
+                            player1.setScore(score);
+                            winner = player1;
+                        } else {
+                            final int score = player2.getScore() + 1;
+                            player2.setScore(score);
+                            winner = player2;
+                        }
+                        System.out.println(winner.getName());
+                        if (chooseQuiz()){
+                            print(winner);
+                        }
+                    }
+                } else if (count == 9) {
+                    System.out.println("ничья!!!");
+                    chooseQuiz();
+                }
+
             } else {
                 System.out.println("введите числа только в диапазоне!!!");
                 continue;
@@ -99,20 +111,25 @@ public class GameWindow implements Closeable {
         }
     }
 
-    private void chooseQuiz() {
-        System.out.println("хотите сыграть заново?(да/нет)");
-        String var = sc.nextLine().trim();
-        switch (var) {
-            case "да":
-                init();
-                play();
-            case "нет":
-                play = false;
-                break;
-            default:
-                chooseQuiz();
-        }
+    private void print(Player player) {
+        writer.println(player);
+        writer.flush();
     }
+
+    private boolean chooseQuiz() {
+        System.out.println("хотите сыграть заново?(да/нет)");
+        String var = sc.next().trim();
+        if (var.equals("да")) {
+            init();
+            play();
+            return false;
+        } else if (var.equals("нет")) {
+            play = false;
+            return true;
+        }
+        return chooseQuiz();
+    }
+
 
     private void refreshConsole() {
         System.out.println("  x\t 1   2   3");

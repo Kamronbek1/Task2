@@ -10,7 +10,7 @@ public class Player {
     }
 
     public Player(String name) {
-        this(name,0);
+        this(name, 0);
     }
 
     public int getScore() {
@@ -31,9 +31,6 @@ public class Player {
 
     @Override
     public String toString() {
-        return "Player{" +
-                "name='" + name + '\'' +
-                ", score=" + score +
-                '}';
+        return name + " " + score;
     }
 }
